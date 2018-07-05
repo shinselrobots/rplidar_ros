@@ -185,18 +185,20 @@ int main(int argc, char * argv[]) {
 
     std::string serial_port;
     int serial_baudrate = 115200;
-    std::string frame_id;
+    std::string frame_id, topic_name;
     bool inverted = false;
     bool angle_compensate = true;
 
     ros::NodeHandle nh;
-    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>("scan", 1000);
     ros::NodeHandle nh_private("~");
     nh_private.param<std::string>("serial_port", serial_port, "/dev/ttyUSB0"); 
     nh_private.param<int>("serial_baudrate", serial_baudrate, 115200); 
     nh_private.param<std::string>("frame_id", frame_id, "laser_frame");
     nh_private.param<bool>("inverted", inverted, false);
     nh_private.param<bool>("angle_compensate", angle_compensate, true);
+    nh_private.param<std::string>("topic_name", topic_name, "scan");
+
+    ros::Publisher scan_pub = nh.advertise<sensor_msgs::LaserScan>(topic_name, 1000);
 
     printf("RPLIDAR running on ROS package rplidar_ros\n"
            "SDK Version: "RPLIDAR_SDK_VERSION"\n");
